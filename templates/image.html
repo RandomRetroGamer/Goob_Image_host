@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>The goob</title>
+    <style>
+        body {
+            background-color: #000000;
+            color: #eee;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        .goob_title {
+            border: 1px solid grey;
+            border-top: none;
+            border-left: none;
+            border-right: none;
+            border-radius: 25px;
+        }
+
+        .gallery {
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        img, video {
+            margin: 10px;
+            border-radius: 10px;
+            border: 2px solid #333;
+        }
+
+        video {
+            max-height: 400px;
+        }
+
+        .image_container {
+            position: relative;
+            display: inline-block;
+            text-align: center;
+            border-top-right-radius: 25px;
+            border: 1px solid gray;
+            margin-top: 10px;
+        }
+
+            .image_container img {
+                width: 90%;
+                height: auto;
+                max-width: 500px;
+                border-radius: 10px;
+                object-fit: contain;
+                box-shadow: 0px 0px 10px gray;
+            }
+
+            .image_container .filename {
+                background-color: gray;
+                color: white;
+                border: none;
+            }
+
+        .filename {
+            font-size: 10px;
+            color: grey;
+        }
+
+        .image_container .plus {
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            color: red;
+            background-color: transparent;
+            border: 2px solid red;
+            cursor: pointer;
+            border-top-right-radius: 25px;
+            border-bottom-left-radius: 25px;
+            z-index: 10;
+        }
+
+        @media (max-width: 1000px) {
+            .image_container {
+                height: auto;
+                width: 99%;
+                max-width: none;
+            }
+
+                .image_container img {
+                    max-width: none;
+                }
+
+            .video_container {
+            }
+
+            img, video {
+                max-width: 100%;
+            }
+
+            .image_container .plus {
+                font-size: 20px;
+                padding: 20px;
+            }
+    </style>
+</head>
+<body>
+    <div class="goob_title">
+        <h1> The Goobs </h1>
+    </div>
+    <a> images </a>
+
+    <div class="gallery">
+        {% for file in files %}
+        {% if file.lower().endswith(('.png', '.jpg', '.jpeg', '.gif')) %}
+
+        <div class="image_container" id="image_container_id">
+            <button type="button" class="plus"> + </button>
+            <img src="{{ url_for('media', filename=file) }}" alt="{{ file }}">
+
+            <p class="filename"> {{file}}</p>
+
+        </div>
+
+        {% endif %}
+        {% endfor %}
+    </div>
+</body>
+</html>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Get all the image containers
+        const containers = document.querySelectorAll(".image_container");
+
+        containers.forEach(container => {
+            const button = container.querySelector(".plus");
+            const img = container.querySelector("img");
+
+            // When button is clicked, open image in a new tab
+            button.addEventListener("click", function () {
+                const imageUrl = img.src;
+                window.open(imageUrl, "_blank"); // Opens image in new tab
+            });
+        });
+    });
+</script>
